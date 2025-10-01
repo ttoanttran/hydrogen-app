@@ -2,6 +2,7 @@ import {Suspense} from 'react';
 import {Await, NavLink, useAsyncValue} from 'react-router';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
+import "../styles/header.css"
 
 /**
  * @param {HeaderProps}
@@ -11,7 +12,11 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   return (
     <header className="header">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
+        <img
+          src="/FrillySocksLogo2.png"
+          alt={shop.name}
+          className="header-logo"
+        />
       </NavLink>
       <HeaderMenu
         menu={menu}
