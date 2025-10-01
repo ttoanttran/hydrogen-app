@@ -2,6 +2,7 @@ import {Await, useLoaderData, Link} from 'react-router';
 import {Suspense} from 'react';
 import {Image} from '@shopify/hydrogen';
 import {ProductItem} from '~/components/ProductItem';
+import {dummyProducts, dummyFeaturedCollection} from '~/data/dummyData';
 
 /**
  * @type {Route.MetaFunction}
@@ -14,12 +15,30 @@ export const meta = () => {
  * @param {Route.LoaderArgs} args
  */
 export async function loader(args) {
-  // Start fetching non-critical data without blocking time to first byte
+  // Toggle this flag to use dummy data or real Shopify data
+  const USE_DUMMY_DATA = true;
+
+  if (USE_DUMMY_DATA) {
+    // Simulate the deferred data structure
+    const mockRecommendedProducts = new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          products: {
+            nodes: dummyProducts,
+          },
+        });
+      }, 100);
+    });
+
+    return {
+      featuredCollection: dummyFeaturedCollection,
+      recommendedProducts: mockRecommendedProducts,
+    };
+  }
+
+  // Original Shopify data fetching
   const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
-
   return {...deferredData, ...criticalData};
 }
 
@@ -31,7 +50,6 @@ export async function loader(args) {
 async function loadCriticalData({context}) {
   const [{collections}] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
   ]);
 
   return {
@@ -49,7 +67,6 @@ function loadDeferredData({context}) {
   const recommendedProducts = context.storefront
     .query(RECOMMENDED_PRODUCTS_QUERY)
     .catch((error) => {
-      // Log query errors, but don't throw them so the page can still render
       console.error(error);
       return null;
     });
@@ -106,11 +123,11 @@ function RecommendedProducts({products}) {
         <Await resolve={products}>
           {(response) => (
             <div className="recommended-products-grid">
-              {response
+              {response && response.products && response.products.nodes
                 ? response.products.nodes.map((product) => (
                     <ProductItem key={product.id} product={product} />
                   ))
-                : null}
+                : <p>No products available</p>}
             </div>
           )}
         </Await>

@@ -318,7 +318,7 @@
 .header-menu-item:focus,
 .header-ctas a:focus,
 .header-ctas button:focus {
-  outline: 6px solid rgb(209, 64, 88);
+  outline: 6px solid rgb(226, 88, 111);
   outline-offset: 2px;
 }
 
