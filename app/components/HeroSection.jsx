@@ -15,7 +15,7 @@ export default function HeroSection() {
       <div className="hero-text">
         <h1>
           {/* Breaking the words apart and using the SpinningO component for all 'O's */}
-          Welc<SpinningO />me t<SpinningO /> the Frilly S<SpinningO />cks Sh<SpinningO />p!
+          Welc<SpinningO />me t<SpinningO /> Frilly S<SpinningO />cks Sh<SpinningO />p!
         </h1>
         <p>Drag our stickers and shop around!</p>
       </div>
