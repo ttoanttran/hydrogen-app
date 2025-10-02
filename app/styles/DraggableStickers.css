@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'Atop Chunky';
+    src: url('../assets/fonts/Atop-R99O3.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; 
+}
+
+
 .stickers-area {
   position: relative;
   width: 100%;
@@ -27,6 +36,12 @@
   filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
 }
 
+.clickme {
+  font-family: "Atop Chunky";
+  color: rgb(82, 162, 228);
+  font-size: 17px;
+}
+
 /* Smooth wiggle on hover */
 @keyframes wiggle {
   0%   { transform: rotate(0deg); }
@@ -41,4 +56,21 @@
 .sticker:hover img {
   animation: wiggle 1s ease-in-out infinite;
   transform-origin: center;
+}
+
+.curved-arrow {
+  position: absolute;
+  top: 35px;  /* Adjust vertical position */
+  left: 5%;   /* Center horizontally or move toward stickers */
+  transform: translateX(-50%);
+  animation: swirl 2s linear infinite;
+  z-index: 10;
+}
+
+@keyframes swirl {
+  0%   { transform: translateX(-50%) rotate(0deg); }
+  25%  { transform: translateX(-50%) rotate(10deg); }
+  50%  { transform: translateX(-50%) rotate(0deg); }
+  75%  { transform: translateX(-50%) rotate(-10deg); }
+  100% { transform: translateX(-50%) rotate(0deg); }
 }

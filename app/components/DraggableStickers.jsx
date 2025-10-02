@@ -1,6 +1,5 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-// Assuming this path is correct for your CSS
 import '../styles/DraggableStickers.css'; 
 
 const initialStickers = [
@@ -19,18 +18,14 @@ const Stickers = () => {
   
   const activeListenersRef = useRef({ onMouseMove: null, onMouseUp: null });
 
-  // Calculate scale based on viewport
   useEffect(() => {
     const updateScale = () => {
       const width = window.innerWidth;
-      // Scale down on smaller screens
       const scale = Math.max(0.5, Math.min(1, width / 1200));
       setViewportScale(scale);
     };
-
     updateScale();
     window.addEventListener('resize', updateScale);
-    
     return () => window.removeEventListener('resize', updateScale);
   }, []);
 
@@ -44,7 +39,7 @@ const Stickers = () => {
       ...s,
       x: spacing * (i + 1) - 80 + Math.random() * 40 - 20,
       y: baseY + offsets[i % offsets.length],
-      scale: 1.5 * viewportScale, // Apply viewport scale here
+      scale: 1.5 * viewportScale,
       rotation: Math.random() * 20 - 10,
     }));
 
@@ -58,7 +53,7 @@ const Stickers = () => {
         document.removeEventListener('mouseup', activeListenersRef.current.onMouseUp);
       }
     };
-  }, [viewportScale]); // Re-initialize when scale changes
+  }, [viewportScale]);
 
   const handleDragStart = (id, e) => {
     e.preventDefault();
@@ -76,7 +71,6 @@ const Stickers = () => {
       setStickers(prevStickers => {
         const newStickers = [...prevStickers];
         const index = newStickers.findIndex(s => s.id === id);
-        
         if (index > -1) {
           newStickers[index] = {
             ...newStickers[index],
@@ -91,15 +85,11 @@ const Stickers = () => {
     const onMouseUp = () => {
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-      
-      // Clear the ref
       activeListenersRef.current = { onMouseMove: null, onMouseUp: null };
       setDraggingId(null);
     };
 
-    // Store references for cleanup
     activeListenersRef.current = { onMouseMove, onMouseUp };
-    
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   };
@@ -119,6 +109,26 @@ const Stickers = () => {
           <img src={sticker.src} alt={`sticker-${sticker.id}`} />
         </div>
       ))}
+
+      {/* Swirly arrow */}
+      <p className='clickme'>click me!</p>
+      <div className="curved-arrow">
+        <svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+          <path 
+            className="arrow-path"
+            d="M10 10 C50 0, 100 40, 110 80" 
+            fill="transparent" 
+            stroke="#ff69b4" 
+            strokeWidth="3" 
+            strokeLinecap="round"
+          />
+          {/* Bigger arrow tip */}
+          <polygon className="arrow-head" points="110,80 100,70 120,70" fill="#ff69b4" />
+        </svg>
+      </div>
+
+
+
     </div>
   );
 };
