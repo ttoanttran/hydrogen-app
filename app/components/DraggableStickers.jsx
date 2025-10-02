@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import '../styles/DraggableStickers.css';
+// Assuming this path is correct for your CSS
+import '../styles/DraggableStickers.css'; 
 
 const initialStickers = [
   { id: 1, src: '/sticker1.png' },
@@ -13,29 +14,44 @@ const initialStickers = [
 const Stickers = () => {
   const containerRef = useRef(null);
   const [stickers, setStickers] = useState([]);
+  const [draggingId, setDraggingId] = useState(null);
+  
+  // NEW: Track active listeners for cleanup
+  const activeListenersRef = useRef({ onMouseMove: null, onMouseUp: null });
 
   useEffect(() => {
     const containerWidth = containerRef.current?.offsetWidth || 800;
-    const baseY = 200; // vertical center
-    const offsets = [-50, 30, -70, 40, -30]; // wave pattern
+    const baseY = 200;
+    const offsets = [-50, 30, -70, 40, -30];
     const spacing = containerWidth / (initialStickers.length + 1);
 
     const initialPositions = initialStickers.map((s, i) => ({
       ...s,
-      x: spacing * (i + 1) - 80 + Math.random() * 40 - 20, // center with some randomness
+      x: spacing * (i + 1) - 80 + Math.random() * 40 - 20,
       y: baseY + offsets[i % offsets.length],
       scale: 1.5,
       rotation: Math.random() * 20 - 10,
     }));
 
     setStickers(initialPositions);
+    
+    // CRITICAL: Cleanup function to remove any lingering listeners
+    return () => {
+      if (activeListenersRef.current.onMouseMove) {
+        document.removeEventListener('mousemove', activeListenersRef.current.onMouseMove);
+      }
+      if (activeListenersRef.current.onMouseUp) {
+        document.removeEventListener('mouseup', activeListenersRef.current.onMouseUp);
+      }
+    };
   }, []);
 
-  const handleDrag = (id, e) => {
+  const handleDragStart = (id, e) => {
     e.preventDefault();
+    setDraggingId(id);
+
     const startX = e.clientX;
     const startY = e.clientY;
-
     const stickerIndex = stickers.findIndex((s) => s.id === id);
     const startSticker = stickers[stickerIndex];
 
@@ -43,20 +59,33 @@ const Stickers = () => {
       const dx = moveEvent.clientX - startX;
       const dy = moveEvent.clientY - startY;
 
-      const newStickers = [...stickers];
-      newStickers[stickerIndex] = {
-        ...startSticker,
-        x: startSticker.x + dx,
-        y: startSticker.y + dy,
-      };
-      setStickers(newStickers);
+      setStickers(prevStickers => {
+        const newStickers = [...prevStickers];
+        const index = newStickers.findIndex(s => s.id === id);
+        
+        if (index > -1) {
+          newStickers[index] = {
+            ...newStickers[index],
+            x: startSticker.x + dx,
+            y: startSticker.y + dy,
+          };
+        }
+        return newStickers;
+      });
     };
 
     const onMouseUp = () => {
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
+      
+      // Clear the ref
+      activeListenersRef.current = { onMouseMove: null, onMouseUp: null };
+      setDraggingId(null);
     };
 
+    // Store references for cleanup
+    activeListenersRef.current = { onMouseMove, onMouseUp };
+    
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   };
@@ -66,11 +95,12 @@ const Stickers = () => {
       {stickers.map((sticker) => (
         <div
           key={sticker.id}
-          className="sticker"
+          className={`sticker ${sticker.id === draggingId ? 'is-dragging' : ''}`}
           style={{
             transform: `translate(${sticker.x}px, ${sticker.y}px) scale(${sticker.scale}) rotate(${sticker.rotation}deg)`,
+            zIndex: sticker.id === draggingId ? 100 : 1,
           }}
-          onMouseDown={(e) => handleDrag(sticker.id, e)}
+          onMouseDown={(e) => handleDragStart(sticker.id, e)}
         >
           <img src={sticker.src} alt={`sticker-${sticker.id}`} />
         </div>
