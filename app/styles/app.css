@@ -19,6 +19,10 @@
   --color-soft-brown: #B08968;
 }
 
+* {
+  cursor: url('/cute-cursor.png') 0 0, auto;
+}
+
 /* Base styles with warm cream background */
 body {
   background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-peach) 50%, var(--color-sky) 100%);
@@ -26,6 +30,7 @@ body {
   margin: 0;
   padding: 0;
 }
+
 
 /* Add to your ProductItem.css or main CSS file */
 .products-grid {
@@ -441,6 +446,7 @@ button.reset:hover:not(:has(> *)) {
 */
 .featured-collection {
   display: block;
+  margin-top: 4rem;
   margin-bottom: 2rem;
   position: relative;
   border-radius: 12px;

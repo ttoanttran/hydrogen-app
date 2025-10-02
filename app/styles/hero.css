@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap');
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4rem 2rem;
+  gap: 2rem;
+  background: none;
+  border-radius: 12px;
+
+}
+
+.hero-text {
+  flex: 1;
+  color: rgb(241, 165, 225);
+  font-family: 'Bubblegum Sans', cursive;
+}
+
+.hero-text h1 {
+  font-size: 4.5rem;
+  margin: 0 0 1rem 0;
+  font-weight: bolder;
+}
+
+.hero-text p {
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: rgb(206, 124, 188);
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-image img {
+  max-width: 100%;
+  box-shadow: none;
+  transition: transform 0.3s ease;
+}
+
+.hero-image img:hover {
+  transform: scale(1.05);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+
+  .hero-text, .hero-image {
+    flex: unset;
+  }
+
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .hero-text p {
+    font-size: 1.1rem;
+  }
+}

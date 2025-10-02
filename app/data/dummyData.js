@@ -119,7 +119,7 @@ export const dummyFeaturedCollection = {
   handle: 'summer-collection',
   image: {
     id: 'gid://shopify/CollectionImage/1',
-    url: '/designinspo.png',
+    url: '/download (3).jpg',
     altText: 'Summer Collection Banner',
     width: 1600,
     height: 600,
