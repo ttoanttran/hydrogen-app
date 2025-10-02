@@ -8,7 +8,7 @@ import {dummyProducts, dummyFeaturedCollection} from '~/data/dummyData';
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [{title: 'FrillySocks | Home'}];
 };
 
 /**

@@ -23,7 +23,6 @@
   display: flex;
   align-items: center;
   height: var(--header-height);
-  position: sticky;
   top: 0;
   z-index: 100;
   backdrop-filter: blur(10px);
@@ -71,6 +70,7 @@
 }
 
 /* Desktop Menu */
+/* Desktop Menu - Change from 45em to 60em (960px) */
 .header-menu-desktop {
   display: none;
   gap: 1.5rem;
@@ -79,9 +79,40 @@
   align-items: center;
 }
 
-@media (min-width: 45em) {
+@media (min-width: 70em) {  /* Changed from 45em to 60em */
   .header-menu-desktop {
     display: flex;
+  }
+}
+
+/* Mobile Toggle Button - Change from 48em to 60em */
+@media (min-width: 70em) {  /* Changed from 48em to 60em */
+  .header-menu-mobile-toggle {
+    display: none;
+  }
+}
+
+/* Responsive Adjustments - Change from 45em to 60em */
+@media (max-width: 70em) {  /* Changed from 45em to 60em */
+  .header {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    gap: 1rem;
+    height: 90px;
+  }
+
+  .header-logo {
+    height: 70px;
+  }
+
+  .header-ctas {
+    gap: 0.5rem;
+  }
+
+  .header-ctas a,
+  .header-ctas button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
   }
 }
 
@@ -200,7 +231,7 @@
   font-size: 1.5rem;
 }
 
-@media (min-width: 48em) {
+@media (min-width: 70em) {
   .header-menu-mobile-toggle {
     display: none;
   }
@@ -318,7 +349,7 @@
 .header-menu-item:focus,
 .header-ctas a:focus,
 .header-ctas button:focus {
-  outline: 6px solid rgb(226, 88, 111);
+  outline: 6px solid rgb(209, 64, 88);
   outline-offset: 2px;
 }
 

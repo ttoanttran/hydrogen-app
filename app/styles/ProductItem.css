@@ -1,0 +1,82 @@
+/* ProductItem.css */
+
+/* 1. Base Product Card Styles */
+.product-item {
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  display: flex; 
+  flex-direction: column;
+  transition: transform 0.3s ease;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+  
+  /* Remove fixed width - let grid control it */
+  width: 100%;
+}
+
+.product-item:hover {
+  transform: translateY(-5px);
+}
+
+/* 2. Product Image Container - This will define the framed rectangular area */
+.product-card-image-container {
+  position: relative; /* Essential for positioning the overlay frame inside */
+  width: 100%;
+  
+  /* Define the rectangular aspect ratio for the image area */
+  aspect-ratio: 4 / 3; /* Example: Landscape rectangle (adjust as needed: 16/9, etc.) */
+  
+  overflow: hidden;
+  /* OPTIONAL: Add padding here if your frame has thick borders 
+     and you want the product image to shrink away from the border. */
+  /* padding: 5%; */ 
+}
+
+/* 3. The Actual Product Image */
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the container */
+  display: block;
+}
+
+/* 4. The Frame Overlay - Now explicitly covering only the image container */
+.product-frame-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 'contain' fits the frame image without cropping */
+  pointer-events: none; /* Allows clicks to pass through to the link */
+  z-index: 10; /* Ensures frame is on top of the product image */
+}
+
+/* 5. Product Information (Title & Price) */
+.product-info-wrapper {
+    /* Add padding to the text area so it looks good below the framed image */
+    padding: 1rem 0.5rem; 
+    text-align: center;
+    /* Optional: Give it a background if your frame is transparent and you need separation */
+    /* background-color: white; */ 
+    z-index: 5; /* Ensure text is below the frame if any part of it overlaps, though it shouldn't */
+}
+
+.product-info-wrapper h4 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.product-info-wrapper small {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Removed the .product-item::after rule as it's no longer needed */
+/* Removed .product-image-wrapper as it's replaced by .product-card-image-container */
+/* Removed .product-frame as it's replaced by .product-frame-overlay */
