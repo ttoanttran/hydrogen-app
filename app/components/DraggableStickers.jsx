@@ -15,9 +15,24 @@ const Stickers = () => {
   const containerRef = useRef(null);
   const [stickers, setStickers] = useState([]);
   const [draggingId, setDraggingId] = useState(null);
+  const [viewportScale, setViewportScale] = useState(1);
   
-  // NEW: Track active listeners for cleanup
   const activeListenersRef = useRef({ onMouseMove: null, onMouseUp: null });
+
+  // Calculate scale based on viewport
+  useEffect(() => {
+    const updateScale = () => {
+      const width = window.innerWidth;
+      // Scale down on smaller screens
+      const scale = Math.max(0.5, Math.min(1, width / 1200));
+      setViewportScale(scale);
+    };
+
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
 
   useEffect(() => {
     const containerWidth = containerRef.current?.offsetWidth || 800;
@@ -29,13 +44,12 @@ const Stickers = () => {
       ...s,
       x: spacing * (i + 1) - 80 + Math.random() * 40 - 20,
       y: baseY + offsets[i % offsets.length],
-      scale: 1.5,
+      scale: 1.5 * viewportScale, // Apply viewport scale here
       rotation: Math.random() * 20 - 10,
     }));
 
     setStickers(initialPositions);
     
-    // CRITICAL: Cleanup function to remove any lingering listeners
     return () => {
       if (activeListenersRef.current.onMouseMove) {
         document.removeEventListener('mousemove', activeListenersRef.current.onMouseMove);
@@ -44,7 +58,7 @@ const Stickers = () => {
         document.removeEventListener('mouseup', activeListenersRef.current.onMouseUp);
       }
     };
-  }, []);
+  }, [viewportScale]); // Re-initialize when scale changes
 
   const handleDragStart = (id, e) => {
     e.preventDefault();

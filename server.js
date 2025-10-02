@@ -13,6 +13,7 @@ export default {
    * @param {ExecutionContext} executionContext
    * @return {Promise<Response>}
    */
+  
   async fetch(request, env, executionContext) {
     try {
       const hydrogenContext = await createHydrogenRouterContext(
